@@ -57,7 +57,7 @@ const loadInstances = async () => {
       }
 
       // 启动 TW 实例
-      const twProcess = spawn('npx', ['tiddlywiki', dataDir, '--listen', `port=${port}`], {
+      spawn('npx', ['tiddlywiki', dataDir, '--listen', `port=${port}`], {
         cwd: dataDir,
         shell: true,
         stdio: 'inherit',

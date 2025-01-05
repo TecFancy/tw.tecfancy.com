@@ -1,17 +1,26 @@
 import fs from "fs";
 import { join } from "path";
+
 import './styles.css';
 
-const WikiIFramePage = async ({ params }: any) => {
-    const { id } = await params;
+interface Params {
+    id: string;
+}
+
+const WikiIFramePage = ({ params }: { params: Params }) => {
+    const { id } = params;
     const BASE_DATA_DIR = join(process.cwd(), 'tiddlywiki-instances');
     const INSTANCES_FILE = join(BASE_DATA_DIR, 'instances.json');
-    const data = JSON.parse(fs.readFileSync(INSTANCES_FILE, 'utf-8') || '[]');
-    const currentInstance = data.find((instance: any) => instance.id === id);
+    const data = JSON.parse(fs.readFileSync(INSTANCES_FILE, 'utf-8') || '[]') as Instances;
+    const currentInstance = data.find((instance: Instance) => instance.id === id);
+
+    const renderIframe = (port: number) => port
+        ? <iframe className="wiki-iframe" src={`http://localhost:${port}`}/>
+        : null;
 
     return (
         <div className="wiki-container">
-            <iframe className="wiki-iframe" src={`http://localhost:${currentInstance.port}`} />
+            {typeof currentInstance?.port === 'number' && renderIframe(currentInstance.port)}
         </div>
     );
 };
