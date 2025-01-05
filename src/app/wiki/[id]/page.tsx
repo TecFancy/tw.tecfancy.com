@@ -1,5 +1,6 @@
 import fs from "fs";
 import { join } from "path";
+import './styles.css';
 
 const WikiIFramePage = async ({ params }: any) => {
     const { id } = await params;
@@ -9,8 +10,8 @@ const WikiIFramePage = async ({ params }: any) => {
     const currentInstance = data.find((instance: any) => instance.id === id);
 
     return (
-        <div>
-            <iframe src={`http://localhost:${currentInstance.port}`} />
+        <div className="wiki-container">
+            <iframe className="wiki-iframe" src={`http://localhost:${currentInstance.port}`} />
         </div>
     );
 };

@@ -2,13 +2,7 @@
 
 import React, { useState } from 'react';
 
-interface PannelProps {
-  [key: string]: unknown;
-}
-
-const Panel = (props: PannelProps) => {
-  console.log('props', props);
-
+const Panel = () => {
   const [creating, setCreating] = useState(false);
 
   const handleCreate = async () => {
