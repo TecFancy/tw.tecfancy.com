@@ -44,8 +44,8 @@ export const createInstance = async () => {
     const id = uuidv4();
     const port = await getAvailablePort();
     const dataDir = join(BASE_DATA_DIR, id);
-    const instanceFileData = JSON.parse(readFileSync(INSTANCES_FILE, 'utf-8') || '[]');
-    instanceFileData.forEach((instance: any) => {
+    const instanceFileData = JSON.parse(readFileSync(INSTANCES_FILE, 'utf-8') || '[]') as Instances;
+    instanceFileData.forEach((instance: Instance) => {
         if (instance?.id) {
             instances.set(instance.id, instance);
         }

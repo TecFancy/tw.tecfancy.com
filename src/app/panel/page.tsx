@@ -12,8 +12,7 @@ const Panel = () => {
     });
 
     if (res.ok) {
-      const data = await res.json();
-      console.log('data', data);
+      await res.json();
       alert('实例创建成功');
     } else {
       const error = await res.json();
