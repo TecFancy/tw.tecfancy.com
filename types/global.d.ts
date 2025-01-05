@@ -3,6 +3,7 @@ type Instance = {
     pid: string;
     port: number;
     dataDir: string;
+    twName: string;
 };
 
 type Instances = Instance[];

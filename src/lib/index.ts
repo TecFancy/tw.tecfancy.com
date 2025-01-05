@@ -1,5 +1,5 @@
 import { join } from "path";
-import {mkdirSync, readFileSync, rmSync, writeFileSync} from "fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import { spawn } from "child_process";
 
 import getPort from "get-port";
@@ -30,35 +30,32 @@ const isProcessRunning = (pid: number) => {
 };
 
 const saveInstances = () => {
-    const data = Array.from(instances.values()).map(({ id, pid, port, dataDir }) => ({
+    const data = Array.from(instances.values()).map(({ id, pid, port, dataDir, twName }) => ({
         id,
         pid,
         port,
         dataDir,
+        twName,
     }));
-    console.log('saveInstances', data, INSTANCES_FILE);
     writeFileSync(INSTANCES_FILE, JSON.stringify(data, null, 2), 'utf-8');
 };
 
-export const createInstance = async () => {
+export const createInstance = async (params: { twName: string }) => {
     const id = uuidv4();
     const port = await getAvailablePort();
     const dataDir = join(BASE_DATA_DIR, id);
-    const instanceFileData = JSON.parse(readFileSync(INSTANCES_FILE, 'utf-8') || '[]') as Instances;
-    instanceFileData.forEach((instance: Instance) => {
-        if (instance?.id) {
-            instances.set(instance.id, instance);
-        }
-    });
+
+    if (existsSync(dataDir)) {
+        const instanceFileData = JSON.parse(readFileSync(INSTANCES_FILE, 'utf-8') || '[]') as Instances;
+        instanceFileData.forEach((instance: Instance) => {
+            if (instance?.id) {
+                instances.set(instance.id, instance);
+            }
+        });
+    }
 
     // 检查是否已有相同 dataDir 的实例在运行
     const existingInstance = Array.from(instances.values()).find(inst => inst.dataDir === dataDir);
-    console.log('id', id);
-    console.log('port', port);
-    console.log('dataDir', dataDir);
-    console.log('instanceFileData', instanceFileData);
-    console.log('instances', instances);
-    console.log('existingInstance', existingInstance);
 
     if (existingInstance && isProcessRunning(existingInstance.pid)) {
         throw new Error(`Data directory ${dataDir} 已有运行中的实例。`);
@@ -93,6 +90,7 @@ export const createInstance = async () => {
         pid,
         port,
         dataDir,
+        twName: params.twName,
         process: server,
         url: `http://localhost:${port}`,
     };
