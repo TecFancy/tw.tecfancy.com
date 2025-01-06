@@ -7,8 +7,8 @@ interface Params {
     id: string;
 }
 
-const WikiIFramePage = ({ params }: { params: Params }) => {
-    const { id } = params;
+const WikiIFramePage = async ({ params }: { params: Promise<Params> }) => {
+    const { id } = await params;
     const BASE_DATA_DIR = join(process.cwd(), 'tiddlywiki-instances');
     const INSTANCES_FILE = join(BASE_DATA_DIR, 'instances.json');
     const data = JSON.parse(fs.readFileSync(INSTANCES_FILE, 'utf-8') || '[]') as Instances;
