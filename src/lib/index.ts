@@ -104,5 +104,5 @@ export const createInstance = async (params: { twName: string }) => {
         saveInstances();
     });
 
-    return instance;
+    return { instance, instances: Array.from(instances.values()) };
 };
