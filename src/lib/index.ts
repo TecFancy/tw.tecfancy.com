@@ -2,6 +2,7 @@ import { join } from "path";
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import { spawn } from "child_process";
 
+import dayjs from "dayjs";
 import getPort from "get-port";
 import { v4 as uuidv4 } from "uuid";
 
@@ -27,6 +28,23 @@ const isProcessRunning = (pid: number) => {
         console.error('check process running error', error);
         return false;
     }
+};
+
+const generateTiddlyWikiTimestamp = () => {
+    return dayjs().format('YYYYMMDDHHmmssSSS');
+};
+
+const updateInstanceTitle = (params: { dataDir: string; twName: string; }) => {
+    const siteTitleTid = [
+        `created: ${generateTiddlyWikiTimestamp()}`,
+        `modified: ${generateTiddlyWikiTimestamp()}`,
+        'title: $:/SiteTitle',
+        'type: text/vnd.tiddlywiki',
+        '',
+        params.twName,
+    ].join('\n');
+    const filePath = join(params.dataDir, 'tiddlers', '$__SiteTitle.tid');
+    writeFileSync(filePath, siteTitleTid, 'utf-8');
 };
 
 const saveInstances = () => {
@@ -94,6 +112,8 @@ export const createInstance = async (params: { twName: string }) => {
         process: server,
         url: `http://localhost:${port}`,
     };
+
+    updateInstanceTitle({ dataDir, twName: params.twName });
 
     instances.set(id, instance);
     saveInstances();
