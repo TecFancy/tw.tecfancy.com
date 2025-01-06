@@ -1,5 +1,7 @@
-import {join} from "path";
+import Link from "next/link";
+
 import fs from "fs";
+import { join } from "path";
 
 const Wikis = () => {
     const BASE_DATA_DIR = join(process.cwd(), 'tiddlywiki-instances');
@@ -16,7 +18,9 @@ const Wikis = () => {
             <ul>
                 {data?.map((instance: Instance) => (
                     <li key={instance.id}>
-                        <a target="_blank" href={`/wiki/${instance.id}`}>{instance.id}</a>
+                        <Link target="_blank" href={`/wiki/${instance.id}`}>
+                            {instance.twName}
+                        </Link>
                     </li>
                 ))}
             </ul>

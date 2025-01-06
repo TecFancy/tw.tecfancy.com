@@ -1,3 +1,5 @@
+@import "../../public/fonts/iconfont.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,12 +7,14 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --hover-background: #4b5563;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0f172a;
     --foreground: #f8fafc;
+    --hover-background: #4b5563;
   }
 }
 

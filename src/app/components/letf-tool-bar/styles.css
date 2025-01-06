@@ -1,9 +1,29 @@
 .left-tool-bar {
     width: 60px;
     height: 100vh;
+    padding: 10px 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     border-right: 1px solid #e0e0e0;
+}
+
+.left-tool-bar .home,
+.left-tool-bar .create {
+    padding: 0 6px;
+    border-radius: 5px;
+    background-color: transparent;
+    transition: 0.3s;
+}
+
+.left-tool-bar .create:hover,
+.left-tool-bar .home:hover {
+    background-color: var(--hover-background);
+}
+
+.left-tool-bar .home .iconfont,
+.left-tool-bar .create .iconfont {
+    font-size: 24px;
+    color: var(--foreground);
 }
