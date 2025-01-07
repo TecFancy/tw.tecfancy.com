@@ -1,4 +1,4 @@
-import LeftToolBarPage from "@/app/components/letf-tool-bar/page";
+import LeftToolBarPage from "@/app/components/letf-tool-bar";
 
 import "./globals.css";
 import "./layout.css";

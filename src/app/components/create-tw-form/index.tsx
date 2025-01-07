@@ -1,19 +1,28 @@
 'use client';
 
-import { useActionState, useState } from "react";
+import {useActionState, useEffect, useState} from "react";
 import Form from "next/form";
+
 import { createInstance } from "./actions";
+import { updateInstancesToLocalStorage } from "@/app/utils";
+
 import "./styles.css";
 
 import type { ChangeEvent } from "react";
 
 const CreateTwForm = () => {
     const [inputValue, setInputValue] = useState('');
-    const [, formAction, isPending] = useActionState(createInstance, null);
+    const [state, formAction, isPending] = useActionState(createInstance, null);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value?.trim());
     };
+
+    useEffect(() => {
+        if (state?.data?.instances?.length) {
+            updateInstancesToLocalStorage(state.data.instances);
+        }
+    }, [state]);
 
     return (
         <Form action={formAction} className="create-tw-form">
