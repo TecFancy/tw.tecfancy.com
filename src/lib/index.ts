@@ -126,3 +126,13 @@ export const createInstance = async (params: { twName: string }) => {
 
     return { instance, instances: Array.from(instances.values()) };
 };
+
+export const getInstances = () => {
+    const BASE_DATA_DIR = join(process.cwd(), 'tiddlywiki-instances');
+    if (!existsSync(BASE_DATA_DIR)) return [];
+
+    const INSTANCES_FILE = join(BASE_DATA_DIR, 'instances.json');
+    if (!existsSync(INSTANCES_FILE)) return [];
+
+    return JSON.parse(readFileSync(INSTANCES_FILE, 'utf-8') || '[]') as Instances;
+};
