@@ -6,15 +6,17 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-  --hover-background: #4b5563;
+  --foreground: #0f172a;
+  --border-color: #94a3b8;
+  --hover-background: #e2e8f0;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0f172a;
-    --foreground: #f8fafc;
-    --hover-background: #4b5563;
+    --background: #ffffff;
+    --foreground: #0f172a;
+    --border-color: #94a3b8;
+    --hover-background: #e2e8f0;
   }
 }
 

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getInstances } from "@/lib";
+import CreateBtn from "./create-btn";
 
 import './styles.css';
 
@@ -13,14 +14,12 @@ const LeftToolBarPage = () => {
             </Link>
             <section className="section">
                 {instances?.length > 0 && instances.map((instance) => (
-                    <Link key={instance.id} href={`/wiki/${instance.id}`} title={instance.twName} target="_blank" className="instance">
+                    <Link key={instance.id} href={`/wiki/${instance.id}`} title={instance.twName} className="instance">
                         {instance.twName?.[0]}
                     </Link>
                 ))}
             </section>
-            <button className="create" title="Create TiddlyWiki Instance">
-                <i className="iconfont">&#xe6df;</i>
-            </button>
+            <CreateBtn />
         </div>
     );
 };
