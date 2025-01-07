@@ -1,4 +1,7 @@
+import LeftToolBarPage from "@/app/components/letf-tool-bar/page";
+
 import "./globals.css";
+import "./layout.css";
 
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
@@ -16,7 +19,12 @@ export default function RootLayout({ children }: Readonly<Props>) {
   return (
     <html lang="en">
       <body className="antialiased">
-        {children}
+        <main>
+            <LeftToolBarPage />
+            <div className="content">
+                {children}
+            </div>
+        </main>
       </body>
     </html>
   );
