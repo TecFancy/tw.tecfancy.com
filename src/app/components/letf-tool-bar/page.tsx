@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { getInstances } from "@/lib";
-import CreateBtn from "./create-btn";
 
 import './styles.css';
 
@@ -19,7 +18,6 @@ const LeftToolBarPage = () => {
                     </Link>
                 ))}
             </section>
-            <CreateBtn />
         </div>
     );
 };

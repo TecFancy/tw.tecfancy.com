@@ -10,21 +10,18 @@
     /** #e0e0e0; */
 }
 
-.left-tool-bar .home,
-.left-tool-bar .create {
+.left-tool-bar .home {
     padding: 0 6px;
     border-radius: 5px;
     background-color: transparent;
     transition: 0.3s;
 }
 
-.left-tool-bar .create:hover,
 .left-tool-bar .home:hover {
     background-color: var(--hover-background);
 }
 
-.left-tool-bar .home .iconfont,
-.left-tool-bar .create .iconfont {
+.left-tool-bar .home .iconfont {
     font-size: 24px;
     color: var(--foreground);
 }
