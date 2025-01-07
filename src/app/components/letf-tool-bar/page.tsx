@@ -13,7 +13,7 @@ const LeftToolBarPage = () => {
             </Link>
             <section className="section">
                 {instances?.length > 0 && instances.map((instance) => (
-                    <Link key={instance.id} href={`/wiki/${instance.id}`} target="_blank">
+                    <Link key={instance.id} href={`/wiki/${instance.id}`} title={instance.twName} target="_blank" className="instance">
                         {instance.twName}
                     </Link>
                 ))}

@@ -34,5 +34,26 @@
     flex-direction: column;
     justify-content: flex-start;
     align-content: center;
+    padding: 10px 0;
     margin: 6px 0;
+}
+
+.left-tool-bar .section .instance {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 6px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    background-color: #475569;
+    transition: 0.3s;
+}
+
+.left-tool-bar .section .instance:hover {
+    border-radius: 5px;
+    background-color: var(--hover-background);
 }
