@@ -1,13 +1,13 @@
 import React from 'react';
-import Panel from '@/app/panel/page';
-import Wikis from "@/app/wikis";
+import Card from "@/app/components/card";
+import CreateTwForm from "@/app/components/create-tw-form";
 
 const Home = () => {
   return (
       <div>
-          <h1>多实例 TiddlyWiki 管理</h1>
-          <Panel/>
-          <Wikis/>
+          <Card>
+              <CreateTwForm />
+          </Card>
       </div>
   );
 };
