@@ -11,11 +11,11 @@ import "./styles.css";
 import type { ChangeEvent } from "react";
 
 const CreateTwForm = () => {
-    const [inputValue, setInputValue] = useState('');
+    const [titleValue, setTitleValue] = useState('');
     const [state, formAction, isPending] = useActionState(createInstance, null);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setInputValue(e.target.value?.trim());
+    const handleTwNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setTitleValue(e.target.value?.trim());
     };
 
     useEffect(() => {
@@ -26,8 +26,26 @@ const CreateTwForm = () => {
 
     return (
         <Form action={formAction} className="create-tw-form">
-            <input name="twName" placeholder="Input a name to create" onChange={handleChange} />
-            <button type="submit" disabled={isPending || !inputValue}>{isPending ? 'Creating...' : 'Create'}</button>
+            <div className="form-item">
+                <label htmlFor="twName" className="required">Title</label>
+                <input
+                    name="twName"
+                    disabled={isPending}
+                    onChange={handleTwNameChange}
+                    autoComplete="false"
+                    placeholder="TiddlyWiki"
+                />
+            </div>
+            <div className="form-item">
+                <label htmlFor="twSubtitle">Subtitle</label>
+                <input
+                    name="twSubtitle"
+                    disabled={isPending}
+                    autoComplete="false"
+                    placeholder="a non-linear personal web notebook"
+                />
+            </div>
+            <button type="submit" disabled={isPending || !titleValue}>{isPending ? 'Creating...' : 'Create'}</button>
         </Form>
     );
 };

@@ -47,6 +47,19 @@ const updateInstanceTitle = (params: { dataDir: string; twName: string; }) => {
     writeFileSync(filePath, siteTitleTid, 'utf-8');
 };
 
+const updateInstanceSubTitle = (params: { dataDir: string; twSubtitle: string; }) => {
+    const siteSubtitleTid = [
+        `created: ${generateTiddlyWikiTimestamp()}`,
+        `modified: ${generateTiddlyWikiTimestamp()}`,
+        'title: $:/SiteSubtitle',
+        'type: text/vnd.tiddlywiki',
+        '',
+        params.twSubtitle,
+    ].join('\n');
+    const filePath = join(params.dataDir, 'tiddlers', '$__SiteSubtitle.tid');
+    writeFileSync(filePath, siteSubtitleTid, 'utf-8');
+};
+
 const saveInstances = () => {
     const data = Array.from(instances.values()).map(({ id, pid, port, dataDir, twName }) => ({
         id,
@@ -58,7 +71,7 @@ const saveInstances = () => {
     writeFileSync(INSTANCES_FILE, JSON.stringify(data, null, 2), 'utf-8');
 };
 
-export const createInstance = async (params: { twName: string }) => {
+export const createInstance = async (params: { twName: string, twSubtitle: string }) => {
     const id = uuidv4();
     const port = await getAvailablePort();
     const dataDir = join(BASE_DATA_DIR, id);
@@ -114,6 +127,7 @@ export const createInstance = async (params: { twName: string }) => {
     };
 
     updateInstanceTitle({ dataDir, twName: params.twName });
+    updateInstanceSubTitle({ dataDir, twSubtitle: params.twSubtitle });
 
     instances.set(id, instance);
     saveInstances();
