@@ -1,28 +1,37 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import classNames from "classnames";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { fetchInstances } from "./actions";
+import { useInstances, useInstancesDispatch } from "@/app/hooks";
 import './styles.css';
-import classNames from "classnames";
 
 const LeftToolBarPage = () => {
     const params = useParams();
+    const instancesStore = useInstances();
+    const dispatch = useInstancesDispatch();
     const [instances, setInstances] = useState<Instances>([]);
 
-    const getInstances = async () => {
+    const bootstrap = async () => {
         try {
-            setInstances(await fetchInstances());
+            const result = await fetchInstances();
+            setInstances(result);
+            dispatch({ type: 'instances/initial', instances: result });
         } catch (error) {
-            setInstances([]);
             console.error('getInitializedInstances error', error);
+            setInstances([]);
         }
     };
 
     useEffect(() => {
-        getInstances();
-    }, []);
+        if (instancesStore?.length === 0) {
+            bootstrap();
+        } else {
+            setInstances(instancesStore);
+        }
+    }, [bootstrap, instancesStore]);
 
     return (
         <div className="left-tool-bar">

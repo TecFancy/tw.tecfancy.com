@@ -1,18 +1,15 @@
 'use client';
 
-import {useActionState, useEffect, useState} from "react";
+import { ChangeEvent, useActionState, useEffect, useState } from "react";
 import Form from "next/form";
-
 import { createInstance } from "./actions";
-import { updateInstancesToLocalStorage } from "@/app/utils";
-
+import { useInstancesDispatch } from "@/app/hooks";
 import "./styles.css";
-
-import type { ChangeEvent } from "react";
 
 const CreateTwForm = () => {
     const [titleValue, setTitleValue] = useState('');
     const [state, formAction, isPending] = useActionState(createInstance, null);
+    const dispatch = useInstancesDispatch();
 
     const handleTwNameChange = (e: ChangeEvent<HTMLInputElement>) => {
         setTitleValue(e.target.value?.trim());
@@ -20,9 +17,9 @@ const CreateTwForm = () => {
 
     useEffect(() => {
         if (state?.data?.instances?.length) {
-            updateInstancesToLocalStorage(state.data.instances);
+            dispatch({ type: 'instances/add', instance: state.data.instance });
         }
-    }, [state]);
+    }, [dispatch, state]);
 
     return (
         <Form action={formAction} className="create-tw-form">
