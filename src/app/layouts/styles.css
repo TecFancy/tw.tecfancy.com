@@ -1,0 +1,12 @@
+main.global-client-layout {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+main.global-client-layout .content {
+    flex: 1;
+    width: 100%;
+    height: 100vh;
+    padding: 10px;
+}
