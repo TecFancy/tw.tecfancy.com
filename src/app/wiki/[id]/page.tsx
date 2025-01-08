@@ -1,6 +1,6 @@
 import fs from "fs";
 import { join } from "path";
-
+import GlobalClientLayout from "@/app/layouts/global-client";
 import './styles.css';
 
 interface Params {
@@ -15,7 +15,11 @@ const WikiIFramePage = async ({ params }: { params: Promise<Params> }) => {
     const currentInstance = data.find((instance: Instance) => instance.id === id);
 
     const renderIframe = (title: string, port: number) => port
-        ? <iframe className="wiki-iframe" src={`http://localhost:${port}`} title={title} />
+        ? (
+            <GlobalClientLayout>
+                <iframe className="wiki-iframe" src={`http://localhost:${port}`} title={title}/>
+            </GlobalClientLayout>
+        )
         : null;
 
     return typeof currentInstance?.port === 'number' && renderIframe(currentInstance.twName, currentInstance.port);
