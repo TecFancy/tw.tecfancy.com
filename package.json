@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "classnames": "^2.5.1",
     "dayjs": "^1.11.13",
     "express": "^4.21.2",
     "get-port": "^7.1.0",

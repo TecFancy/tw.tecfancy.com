@@ -51,6 +51,11 @@
     transition: 0.3s;
 }
 
+.left-tool-bar .section .instance.active {
+    border-radius: 5px;
+    background-color: var(--hover-background);
+}
+
 .left-tool-bar .section .instance:hover {
     border-radius: 5px;
     background-color: var(--hover-background);

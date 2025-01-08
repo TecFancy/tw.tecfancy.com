@@ -14,15 +14,17 @@ const WikiIFramePage = async ({ params }: { params: Promise<Params> }) => {
     const data = JSON.parse(fs.readFileSync(INSTANCES_FILE, 'utf-8') || '[]') as Instances;
     const currentInstance = data.find((instance: Instance) => instance.id === id);
 
-    const renderIframe = (title: string, port: number) => port
+    console.log('currentInstance', currentInstance);
+
+    const renderIframe = (title: string, id: string, port: number) => port
         ? (
-            <GlobalClientLayout>
+            <GlobalClientLayout id={id}>
                 <iframe className="wiki-iframe" src={`http://localhost:${port}`} title={title}/>
             </GlobalClientLayout>
         )
         : null;
 
-    return typeof currentInstance?.port === 'number' && renderIframe(currentInstance.twName, currentInstance.port);
+    return typeof currentInstance?.port === 'number' && renderIframe(currentInstance.twName, currentInstance.id, currentInstance.port);
 };
 
 export default WikiIFramePage;
