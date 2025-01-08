@@ -7,12 +7,11 @@ import type { FC, ReactNode } from "react";
 
 interface Props {
     children: ReactNode;
-    id?: string;
 }
-const GlobalClientLayout: FC<Props> = ({ children, id }) => {
+const GlobalLayout: FC<Props> = ({ children }) => {
     return (
         <main className="global-client-layout">
-            <LeftToolBarPage id={id} />
+            <LeftToolBarPage />
             <div className="content">
                 {children}
             </div>
@@ -20,4 +19,4 @@ const GlobalClientLayout: FC<Props> = ({ children, id }) => {
 );
 };
 
-export default GlobalClientLayout;
+export default GlobalLayout;

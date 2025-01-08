@@ -2,17 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { fetchInstances } from "./actions";
-import classNames from "classnames";
 import './styles.css';
+import classNames from "classnames";
 
-interface Props {
-    id?: string;
-}
-
-const LeftToolBarPage = ({ id }: Props) => {
+const LeftToolBarPage = () => {
+    const params = useParams();
     const [instances, setInstances] = useState<Instances>([]);
-    const classes = (active: boolean) => classNames("instance", { active });
 
     const getInstances = async () => {
         try {
@@ -34,7 +31,12 @@ const LeftToolBarPage = ({ id }: Props) => {
             </Link>
             <section className="section">
                 {instances?.length > 0 && instances.map((instance) => (
-                    <Link key={instance.id} href={`/wiki/${instance.id}`} title={instance.twName} className={classes(instance.id === id)}>
+                    <Link
+                        key={instance.id}
+                        href={`/wiki/${instance.id}`}
+                        title={instance.twName}
+                        className={classNames("instance", { active: params?.id === instance.id })}
+                    >
                         {instance.twName?.[0]}
                     </Link>
                 ))}
