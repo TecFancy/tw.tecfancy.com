@@ -7,7 +7,6 @@ export const initialInstances: Instances = [];
 export function instancesReducer(instances: Instances, action: InstancesActionType) {
     switch (action.type) {
         case "instances/initial": {
-            console.log('initial instances', action);
             return action.instances;
         }
         case "instances/add": {
