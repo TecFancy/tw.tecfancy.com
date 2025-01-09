@@ -6,6 +6,7 @@
     "dev:local": "cross-env PORT=8080 node server.mjs",
     "dev": "next dev --turbopack",
     "build": "next build",
+    "start:local": "cross-env NODE_ENV=production node server.mjs",
     "start": "next start",
     "lint": "next lint"
   },

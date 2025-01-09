@@ -7,7 +7,7 @@ import { join } from "path";
 
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev, turbopack: true });
+const app = next({ dev, turbopack: dev });
 const handle = app.getRequestHandler();
 const BASE_DATA_DIR = join(process.cwd(), 'tiddlywiki-instances');
 const INSTANCES_FILE = join(BASE_DATA_DIR, 'instances.json');
