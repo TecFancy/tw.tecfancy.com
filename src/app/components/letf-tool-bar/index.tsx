@@ -30,9 +30,7 @@ const LeftToolBarPage = () => {
     }, []);
 
     useEffect(() => {
-        if (instancesStore.length > 0) {
-            setInstances(instancesStore);
-        }
+        setInstances(instancesStore);
     }, [instancesStore]);
 
     return (

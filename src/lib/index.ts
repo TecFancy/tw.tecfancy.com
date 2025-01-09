@@ -145,3 +145,26 @@ export const createInstance = async (params: { twName: string, twSubtitle: strin
 
     return { instance, instances: Array.from(instances.values()) };
 };
+
+/**
+ * Delete an instance by ID
+ */
+export const deleteInstance = async (params: { instanceId: string }) => {
+    const instancesFileData = getInstances();
+    const instance = instancesFileData?.find(inst => inst.id === params.instanceId);
+
+    if (!instance) {
+        throw new Error(`Instance ${params.instanceId} not found.`);
+    }
+
+    if (isProcessRunning(Number(instance.pid))) {
+        process.kill(Number(instance.pid));
+    }
+
+    const filteredInstances = instancesFileData.filter(inst => inst.id !== params.instanceId);
+    writeFileSync(INSTANCES_FILE, JSON.stringify(filteredInstances, null, 2), 'utf-8');
+
+    // TODO: Move the instance data directory to the trash
+
+    return filteredInstances;
+};

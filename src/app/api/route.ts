@@ -1,4 +1,4 @@
-import { createInstance, getInstances } from "@/lib";
+import { createInstance, deleteInstance } from "@/lib";
 
 export const dynamic = 'force-static';
 
@@ -8,7 +8,8 @@ export async function POST(request: Request) {
     return Response.json({ data: result });
 }
 
-export async function GET() {
-    const instances = getInstances();
-    return Response.json({ data: instances });
+export async function DELETE(request: Request) {
+    const { id } = await request.json();
+    const result = await deleteInstance({ instanceId: id });
+    return Response.json({ data: result });
 }
