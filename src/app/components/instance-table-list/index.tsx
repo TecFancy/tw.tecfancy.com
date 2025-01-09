@@ -32,7 +32,10 @@ const Index = () => {
     return (
         <Table<Instance>
             columns={columns}
-            dataSource={instances}
+            dataSource={instances.map(instance => ({
+                ...instance,
+                key: instance.id,
+            }))}
             size="middle"
             bordered
             scroll={{ x: '100%' }}
