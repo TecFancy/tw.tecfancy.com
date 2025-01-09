@@ -36,8 +36,6 @@ const LeftToolBarPage = () => {
         }
     }, [instancesStore]);
 
-    console.log('instances', instances);
-
     return (
         <div className="left-tool-bar">
             <Link className="home" href="/" title="Home">

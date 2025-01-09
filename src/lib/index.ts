@@ -3,12 +3,19 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { spawn } from "child_process";
 
 import dayjs from "dayjs";
+import jdenticon from "jdenticon";
 import getPort from "get-port";
 import { v4 as uuidv4 } from "uuid";
 
 const instances = new Map();
 const BASE_DATA_DIR = join(process.cwd(), 'tiddlywiki-instances');
 const INSTANCES_FILE = join(BASE_DATA_DIR, 'instances.json');
+
+interface GenerateInstanceAvatarInterface {
+    size: number;
+    value: string;
+    type: 'svg' | 'png';
+}
 
 const getAvailablePort = async () => {
     let port = await getPort();
@@ -144,4 +151,20 @@ export const createInstance = async (params: { twName: string, twSubtitle: strin
     saveInstances();
 
     return { instance, instances: Array.from(instances.values()) };
+};
+
+/**
+ * Generate an avatar image based on the provided value.
+ */
+export const generateInstanceAvatar = (params: GenerateInstanceAvatarInterface) => {
+    const { size = 200, value, type = 'svg' } = params;
+
+    if (!value) return null;
+
+    const strategy = {
+        svg: jdenticon.toSvg,
+        png: jdenticon.toPng,
+    };
+    if (!strategy?.[type]) return null;
+    return strategy[type](value, size);
 };
