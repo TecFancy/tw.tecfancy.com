@@ -31,7 +31,6 @@ const LeftToolBarPage = () => {
 
     useEffect(() => {
         if (instancesStore.length > 0) {
-            console.log('update instances: setInstances', instancesStore);
             setInstances(instancesStore);
         }
     }, [instancesStore]);
