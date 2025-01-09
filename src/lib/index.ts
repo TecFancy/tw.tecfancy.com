@@ -1,5 +1,5 @@
 import { join } from "path";
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { spawn } from "child_process";
 
 import dayjs from "dayjs";
@@ -71,25 +71,25 @@ const saveInstances = () => {
     writeFileSync(INSTANCES_FILE, JSON.stringify(data, null, 2), 'utf-8');
 };
 
+export const getInstances = () => {
+    const BASE_DATA_DIR = join(process.cwd(), 'tiddlywiki-instances');
+    if (!existsSync(BASE_DATA_DIR)) return [];
+
+    const INSTANCES_FILE = join(BASE_DATA_DIR, 'instances.json');
+    if (!existsSync(INSTANCES_FILE)) return [];
+
+    return JSON.parse(readFileSync(INSTANCES_FILE, 'utf-8') || '[]') as Instances;
+};
+
 export const createInstance = async (params: { twName: string, twSubtitle: string }) => {
     const id = uuidv4();
     const port = await getAvailablePort();
     const dataDir = join(BASE_DATA_DIR, id);
 
-    if (existsSync(dataDir)) {
-        const instanceFileData = JSON.parse(readFileSync(INSTANCES_FILE, 'utf-8') || '[]') as Instances;
-        instanceFileData.forEach((instance: Instance) => {
-            if (instance?.id) {
-                instances.set(instance.id, instance);
-            }
-        });
-    }
-
     // 检查是否已有相同 dataDir 的实例在运行
     const existingInstance = Array.from(instances.values()).find(inst => inst.dataDir === dataDir);
-
     if (existingInstance && isProcessRunning(existingInstance.pid)) {
-        throw new Error(`Data directory ${dataDir} 已有运行中的实例。`);
+        throw new Error(`Data directory ${dataDir} already has a running instance.`);
     }
 
     mkdirSync(dataDir, { recursive: true });
@@ -104,7 +104,7 @@ export const createInstance = async (params: { twName: string, twSubtitle: strin
 
         init.on('close', (code) => {
             if (code === 0) resolve(true);
-            else reject(new Error(`TiddlyWiki 初始化失败，代码 ${code}`));
+            else reject(new Error(`TiddlyWiki initialization failed, code ${code}`));
         });
     });
 
@@ -126,27 +126,22 @@ export const createInstance = async (params: { twName: string, twSubtitle: strin
         url: `http://localhost:${port}`,
     };
 
+    // Update the instance title and subtitle
     updateInstanceTitle({ dataDir, twName: params.twName });
     updateInstanceSubTitle({ dataDir, twSubtitle: params.twSubtitle });
 
+    // If there are no instances in memory, load them from disk
+    const instancesData = getInstances();
+    if (instances.size === 0 && instancesData.length > 0) {
+        instancesData.forEach(({ id, pid, port, dataDir, twName }) => {
+            instances.set(id, { id, pid, port, dataDir, twName });
+        });
+    }
+
+    // Add the new instance to the in-memory list
     instances.set(id, instance);
+
     saveInstances();
 
-    server.on('close', () => {
-        instances.delete(id);
-        rmSync(dataDir, { recursive: true, force: true });
-        saveInstances();
-    });
-
     return { instance, instances: Array.from(instances.values()) };
-};
-
-export const getInstances = () => {
-    const BASE_DATA_DIR = join(process.cwd(), 'tiddlywiki-instances');
-    if (!existsSync(BASE_DATA_DIR)) return [];
-
-    const INSTANCES_FILE = join(BASE_DATA_DIR, 'instances.json');
-    if (!existsSync(INSTANCES_FILE)) return [];
-
-    return JSON.parse(readFileSync(INSTANCES_FILE, 'utf-8') || '[]') as Instances;
 };

@@ -1,7 +1,6 @@
 'use server';
 
 export const createInstance = async (prevState: unknown, formData: FormData) => {
-    console.log('createInstance', formData);
     const res = await fetch('http://localhost:8080/api', {
         method: 'POST',
         body: JSON.stringify(Object.fromEntries(formData)),
