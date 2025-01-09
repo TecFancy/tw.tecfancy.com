@@ -54,7 +54,7 @@ const updateInstanceSubTitle = (params: { dataDir: string; twSubtitle: string; }
         'title: $:/SiteSubtitle',
         'type: text/vnd.tiddlywiki',
         '',
-        params.twSubtitle,
+        params.twSubtitle || 'a non-linear personal web notebook',
     ].join('\n');
     const filePath = join(params.dataDir, 'tiddlers', '$__SiteSubtitle.tid');
     writeFileSync(filePath, siteSubtitleTid, 'utf-8');
