@@ -163,16 +163,17 @@ export const deleteInstance = async (params: { instanceId: string }) => {
     }
 
     const filteredInstances = instancesFileData.filter(inst => inst.id !== params.instanceId);
+    instances.delete(params.instanceId);
     writeFileSync(INSTANCES_FILE, JSON.stringify(filteredInstances, null, 2), 'utf-8');
 
     // TODO: Move the instance data directory to the trash
 
     return filteredInstances;
 };
+
 (async () => {
     const instancesData = getInstances();
     instancesData.forEach(({ id, pid, port, dataDir, twName }) => {
         instances.set(id, { id, pid, port, dataDir, twName });
     });
-    return instancesData;
 })();
