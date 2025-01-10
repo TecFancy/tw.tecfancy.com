@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs, {existsSync, writeFileSync} from 'fs';
 import net from 'net';
 import express from 'express';
 import { spawn } from 'child_process';
@@ -62,7 +62,7 @@ const loadInstances = async () => {
       }
 
       // 启动 TW 实例
-      spawn('npx', ['tiddlywiki', dataDir, '--listen', `port=${port}`], {
+      const inst = spawn('npx', ['tiddlywiki', dataDir, '--listen', `port=${port}`], {
         cwd: dataDir,
         shell: true,
         stdio: 'inherit',
@@ -72,6 +72,7 @@ const loadInstances = async () => {
       const started = await waitForPort(port, domain, 20, 500);
       if (started) {
         console.log(`TiddlyWiki instance started on port ${port}`);
+        instance.pid = inst.pid;
       } else {
         console.error(`Failed to start TiddlyWiki instance on port ${port}`);
       }
@@ -82,7 +83,12 @@ const loadInstances = async () => {
 
 app.prepare().then(async () => {
   try {
-    await loadInstances(); // 等待所有 TW 实例启动
+    // Wait for all TW instances to start
+    const updatedInstancesData = await loadInstances();
+
+    if (existsSync(INSTANCES_FILE)) {
+      writeFileSync(INSTANCES_FILE, JSON.stringify(updatedInstancesData, null, 2), 'utf-8');
+    }
 
     const server = express();
 

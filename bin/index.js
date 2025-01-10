@@ -4,25 +4,25 @@ const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
-// 获取项目根目录路径
+// Get the project root directory path
 const projectRoot = path.resolve(__dirname, '..');
 process.chdir(projectRoot);
 
-// 定义日志文件夹和 PID 文件路径
+// Define log directory and PID file path
 const LOG_DIR = path.join(projectRoot, 'log');
 const PID_FILE = path.join(LOG_DIR, 'startlocal.pid');
 
-// 创建日志文件夹（如果不存在）
+// Create log directory if it doesn't exist
 if (!fs.existsSync(LOG_DIR)) {
     fs.mkdirSync(LOG_DIR, { recursive: true });
 }
 
-// 获取命令行参数
+// Get command line arguments
 const args = process.argv.slice(2);
 const command = args[0];
 
 if (!command) {
-    console.error('请提供一个命令参数: start 或 stop');
+    console.error('Please provide a command argument: start or stop');
     process.exit(1);
 }
 
@@ -34,106 +34,169 @@ switch (command) {
         stopProcess();
         break;
     default:
-        console.error(`未知的命令: ${command}`);
-        console.error('可用命令: start, stop');
+        console.error(`Unknown command: ${command}`);
+        console.error('Available commands: start, stop');
         process.exit(1);
 }
 
-// 启动进程的函数
+// Start the process function
 function startProcess() {
-    // 检查是否已有运行中的进程
+    // Check if there is already a running process
     if (fs.existsSync(PID_FILE)) {
         const existingPid = parseInt(fs.readFileSync(PID_FILE, 'utf-8'), 10);
         if (isProcessRunning(existingPid)) {
-            console.error(`错误: 进程已经在运行 (PID: ${existingPid})`);
+            console.error(`ERROR: Process is already running (PID: ${existingPid})`);
             process.exit(1);
         } else {
-            console.log('发现孤立的 PID 文件，删除中...');
+            console.log('Finding orphaned PID file, deleting...');
             fs.unlinkSync(PID_FILE);
         }
     }
 
-    // 生成带有时间戳的日志文件名
+    // Generate log file name with timestamp
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const LOG_FILE = path.join(LOG_DIR, `startlocal-${timestamp}.log`);
 
-    // 定义要执行的命令和参数
+    // Define the command and arguments to run
     const commandToRun = 'npm';
     const argsToRun = ['run', 'start:local'];
 
-    // 创建写入流用于日志记录
+    // Create write streams for logging
     const out = fs.openSync(LOG_FILE, 'a');
     const err = fs.openSync(LOG_FILE, 'a');
 
-    // 启动子进程
+    // Start the child process
     const child = spawn(commandToRun, argsToRun, {
         detached: true,
         stdio: ['ignore', out, err],
     });
 
-    // 写入 PID 文件
+    // Write the PID to the PID file
     fs.writeFileSync(PID_FILE, child.pid.toString(), 'utf-8');
 
-    // 让子进程在后台运行
+    // Let the child process run in the background
     child.unref();
 
-    console.log(`已在后台启动 'start:local'，PID: ${child.pid}`);
-    console.log(`日志文件: ${LOG_FILE}`);
-    console.log('可通过 `stop` 命令停止进程');
+    console.log(`The 'start:local' command is Running in background, PID: ${child.pid}`);
+    console.log(`Log file: ${LOG_FILE}`);
+    console.log('Use `stop` command to stop the process');
 }
 
-// 停止进程的函数
-function stopProcess() {
-    // 检查 PID 文件是否存在
-    if (!fs.existsSync(PID_FILE)) {
-        console.error('错误: PID 文件不存在，进程可能未运行');
-        process.exit(1);
+// TODO remove this duplicated code (src/lib/index.ts)
+function getInstances() {
+    const BASE_DATA_DIR = path.join(process.cwd(), 'tiddlywiki-instances');
+    if (!fs.existsSync(BASE_DATA_DIR)) return [];
+
+    const INSTANCES_FILE = path.join(BASE_DATA_DIR, 'instances.json');
+    if (!fs.existsSync(INSTANCES_FILE)) return [];
+
+    try {
+        return JSON.parse(fs.readFileSync(INSTANCES_FILE, 'utf-8') || '[]');
+    } catch (err) {
+        console.log(`Error reading instances file: ${err.message}`);
+        return [];
     }
+}
 
-    // 读取 PID
-    const pid = parseInt(fs.readFileSync(PID_FILE, 'utf-8'), 10);
+function stopMainProcess() {
+    // Check if the PID file exists
+    if (!fs.existsSync(PID_FILE)) {
+        console.error('ERROR: Main PID file does not exist, process may not be running');
+    } else {
+        // Read the PID from the file
+        const pid = parseInt(fs.readFileSync(PID_FILE, 'utf-8'), 10);
 
+        if (!isProcessRunning(pid)) {
+            console.error(`ERROR: Main process (PID: ${pid}) not found`);
+            fs.unlinkSync(PID_FILE);
+        } else {
+            terminateProcess(pid, 'main process');
+        }
+    }
+}
+
+// Stop a single process
+function terminateProcess(pid, processName) {
     if (!isProcessRunning(pid)) {
-        console.error(`错误: 找不到 PID ${pid} 对应的运行进程`);
-        fs.unlinkSync(PID_FILE);
-        process.exit(1);
+        console.warn(`WARN: ${processName} (PID: ${pid}) is not running.`);
+        return;
     }
 
     try {
+        // Send SIGTERM signal to the process
         process.kill(pid, 'SIGTERM');
-        console.log(`正在停止进程 PID: ${pid}...`);
+        console.log(`Waiting for ${processName} to stop...`);
 
-        // 等待进程终止
+        // Wait for the process to stop
         const checkInterval = setInterval(() => {
             if (!isProcessRunning(pid)) {
                 clearInterval(checkInterval);
-                console.log('进程已停止');
-                fs.unlinkSync(PID_FILE);
+                console.log(`${processName} (PID: ${pid}) has stopped.`);
+                // Delete PID file if it's the main process
+                if (processName === 'main process') {
+                    fs.unlinkSync(PID_FILE);
+                }
             }
         }, 1000);
 
-        // 超时处理（例如 10 秒后强制终止）
+        // Timeout handling (e.g. force kill after 10 seconds)
         setTimeout(() => {
             if (isProcessRunning(pid)) {
-                console.warn('进程未能在指定时间内停止，尝试强制终止...');
-                process.kill(pid, 'SIGKILL');
-                fs.unlinkSync(PID_FILE);
-                console.log('进程已被强制终止');
+                console.warn(`${processName} (PID: ${pid}) did not stop in time, attempting to force kill...`);
+                try {
+                    process.kill(pid, 'SIGKILL');
+                    console.log(`${processName} (PID: ${pid}) has been force killed.`);
+                } catch (err) {
+                    console.error(`ERROR: Could not force kill ${processName} (PID: ${pid}), reason: ${err.message}`);
+                }
             }
         }, 10000);
     } catch (err) {
-        console.error(`错误: 无法终止 PID ${pid}，原因: ${err.message}`);
-        fs.unlinkSync(PID_FILE);
-        process.exit(1);
+        console.error(`ERROR: Could not stop ${processName} (PID: ${pid}), reason: ${err.message}`);
     }
 }
 
-// 检查进程是否在运行
+// Stop the process function
+function stopProcess() {
+    const instances = getInstances();
+
+    // Stop the main process
+    stopMainProcess();
+
+    // Stop all TiddlyWiki instances process
+    if (instances.length > 0) {
+        console.log(`\nStopping ${instances.length} TiddlyWiki instances...`);
+        instances.forEach(instance => {
+            if (instance.pid) {
+                terminateProcess(instance.pid, `Instance: "${instance.twName}"`);
+            } else {
+                console.warn(`Instance "${instance.twName}" does not have PID information, skipping.`);
+            }
+        });
+
+        // Optional: clear instances.json file or update as needed
+        // fs.writeFileSync(path.join(process.cwd(), 'tiddlywiki-instances', 'instances.json'), '[]', 'utf-8');
+    } else {
+        console.log('Don\'t find any instances that need to be stopped.');
+    }
+}
+
+// Check if a process is running
 function isProcessRunning(pid) {
     try {
         process.kill(pid, 0);
         return true;
     } catch (err) {
-        return false;
+        if (err.code === 'ESRCH') {
+            // The process is not exist
+             return false;
+        } else if (err.code === 'EPERM') {
+            // The process exists, but we don't have permission to signal it
+            return true;
+        } else {
+            // Unexpected error
+            console.error(`Error checking process ${pid}:`, err);
+            return false;
+        }
     }
 }

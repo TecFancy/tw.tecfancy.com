@@ -22,7 +22,8 @@ const getAvailablePort = async () => {
 
 const isProcessRunning = (pid: number) => {
     try {
-        process.kill(pid, 0); // 发送信号 0 不会实际终止进程
+        // Sending signal 0 to a PID will raise an exception if the process does not exist
+        process.kill(pid, 0);
         return true;
     } catch (error: unknown) {
         console.error('check process running error', error);
@@ -168,7 +169,6 @@ export const deleteInstance = async (params: { instanceId: string }) => {
 
     return filteredInstances;
 };
-
 (async () => {
     const instancesData = getInstances();
     instancesData.forEach(({ id, pid, port, dataDir, twName }) => {

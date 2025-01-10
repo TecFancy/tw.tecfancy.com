@@ -1,6 +1,6 @@
 {
   "name": "@tecfancy/mws",
-  "version": "0.0.4",
+  "version": "0.0.9",
   "bin": {
     "multi-wiki-server": "bin/index.js",
     "mws": "bin/index.js"
@@ -17,8 +17,7 @@
     "package.json",
     "postcss.config.mjs",
     "server.mjs",
-    "tailwind.config.ts",
-    "tsconfig.json"
+    "tailwind.config.ts"
   ],
   "scripts": {
     "prepare": "next build",
