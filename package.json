@@ -1,6 +1,6 @@
 {
   "name": "@tecfancy/mws",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "bin": {
     "multi-wiki-server": "bin/index.js",
     "mws": "bin/index.js"
@@ -10,6 +10,7 @@
     "public",
     "src",
     "types",
+    ".env",
     "eslint.config.mjs",
     "next.config.js",
     "next-env.d.ts",
