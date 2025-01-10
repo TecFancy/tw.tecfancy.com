@@ -168,3 +168,11 @@ export const deleteInstance = async (params: { instanceId: string }) => {
 
     return filteredInstances;
 };
+
+(async () => {
+    const instancesData = getInstances();
+    instancesData.forEach(({ id, pid, port, dataDir, twName }) => {
+        instances.set(id, { id, pid, port, dataDir, twName });
+    });
+    return instancesData;
+})();
