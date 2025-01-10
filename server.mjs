@@ -1,12 +1,14 @@
 import fs from 'fs';
 import net from 'net';
 import express from 'express';
-import next from 'next';
 import { spawn } from 'child_process';
 import { join } from "path";
+import next from 'next';
+import dotenv from 'dotenv';
 
-const port = process.env.PORT || 3000;
-const dev = process.env.NODE_ENV !== 'production';
+const env = dotenv.config().parsed;
+const port = env.PORT || process.env.PORT || 8080;
+const dev = (env.NODE_ENV || process.env.NODE_ENV) !== 'production';
 const app = next({ dev, turbopack: dev });
 const handle = app.getRequestHandler();
 const BASE_DATA_DIR = join(process.cwd(), 'tiddlywiki-instances');
