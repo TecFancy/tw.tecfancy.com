@@ -7,6 +7,8 @@ import next from 'next';
 import dotenv from 'dotenv';
 
 const env = dotenv.config().parsed;
+const protocol = env.PROTOCOL || process.env.PROTOCOL || 'http';
+const domain = env.DOMAIN || process.env.DOMAIN || 'localhost';
 const port = env.PORT || process.env.PORT || 8080;
 const dev = (env.NODE_ENV || process.env.NODE_ENV) !== 'production';
 const app = next({ dev, turbopack: dev });
@@ -15,7 +17,7 @@ const BASE_DATA_DIR = join(process.cwd(), 'tiddlywiki-instances');
 const INSTANCES_FILE = join(BASE_DATA_DIR, 'instances.json');
 
 // Helper 函数：检查端口是否开放
-const isPortOpen = (port, host = 'localhost') => {
+const isPortOpen = (port, host) => {
   return new Promise((resolve) => {
     const socket = new net.Socket();
     socket.setTimeout(1000);
@@ -36,7 +38,7 @@ const isPortOpen = (port, host = 'localhost') => {
 };
 
 // Helper 函数：等待端口开放
-const waitForPort = async (port, host = 'localhost', retries = 10, delay = 1000) => {
+const waitForPort = async (port, host, retries = 10, delay = 1000) => {
   for (let i = 0; i < retries; i++) {
     const open = await isPortOpen(port, host);
     if (open) {
@@ -66,7 +68,7 @@ const loadInstances = async () => {
       });
 
       // 等待端口开放
-      const started = await waitForPort(port, 'localhost', 20, 500);
+      const started = await waitForPort(port, domain, 20, 500);
       if (started) {
         console.log(`TiddlyWiki instance started on port ${port}`);
       } else {
@@ -92,7 +94,7 @@ app.prepare().then(async () => {
 
     server.listen(port, (err) => {
       if (err) throw err;
-      console.log(`> Ready on http://localhost:${port}`);
+      console.log(`> Ready on ${protocol}://${domain}:${port}`);
     });
   } catch (error) {
     console.error('Error starting server:', error);
