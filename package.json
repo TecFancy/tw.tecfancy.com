@@ -7,13 +7,17 @@
   },
   "files": [
     ".next",
-    "server.mjs",
     "public",
     "src",
     "types",
     ".env",
-    "package.json",
+    "eslint.config.mjs",
     "next.config.js",
+    "next-env.d.ts",
+    "package.json",
+    "postcss.config.mjs",
+    "server.mjs",
+    "tailwind.config.ts",
     "tsconfig.json"
   ],
   "scripts": {
