@@ -19,7 +19,9 @@
     "tailwind.config.ts"
   ],
   "scripts": {
+    "prepublish": "node merge-deps.js",
     "prepare": "next build",
+    "postpublish": "node restore-package.js",
     "dev:local": "dotenv -e .env.development node server.mjs",
     "dev": "next dev --turbopack",
     "build": "next build",
