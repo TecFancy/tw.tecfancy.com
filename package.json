@@ -10,9 +10,11 @@
     "server.mjs",
     "public",
     "src",
+    "types",
     ".env",
     "package.json",
-    "next.config.js"
+    "next.config.js",
+    "tsconfig.json"
   ],
   "scripts": {
     "prepare": "next build",
