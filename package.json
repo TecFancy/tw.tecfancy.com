@@ -2,8 +2,8 @@
   "name": "@tecfancy/mws",
   "version": "0.0.2",
   "bin": {
-    "multi-wiki-server": "./bin/index.js",
-    "mws": "./bin/index.js"
+    "multi-wiki-server": "bin/index.js",
+    "mws": "bin/index.js"
   },
   "files": [
     ".next",
