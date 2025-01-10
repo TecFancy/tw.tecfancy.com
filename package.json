@@ -1,6 +1,6 @@
 {
   "name": "@tecfancy/mws",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "bin": {
     "multi-wiki-server": "bin/index.js",
     "mws": "bin/index.js"
@@ -19,9 +19,8 @@
     "tailwind.config.ts"
   ],
   "scripts": {
-    "prepublish": "node merge-deps.js",
     "prepare": "next build",
-    "postpublish": "node restore-package.js",
+    "pack": "node pack.js",
     "dev:local": "dotenv -e .env.development node server.mjs",
     "dev": "next dev --turbopack",
     "build": "next build",
