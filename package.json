@@ -1,6 +1,6 @@
 {
   "name": "@tecfancy/mws",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "bin": {
     "multi-wiki-server": "bin/index.js",
     "mws": "bin/index.js"
@@ -10,7 +10,6 @@
     "public",
     "src",
     "types",
-    ".env",
     "eslint.config.mjs",
     "next.config.js",
     "next-env.d.ts",
@@ -32,7 +31,6 @@
     "antd": "^5.23.0",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.13",
-    "dotenv": "^16.4.7",
     "dotenv-cli": "^8.0.0",
     "express": "^4.21.2",
     "get-port": "^7.1.0",
