@@ -1,8 +1,20 @@
 {
-  "name": "tw.tecfancy.com",
-  "version": "0.1.0",
+  "name": "@tecfancy/mws",
+  "version": "0.0.1",
   "private": true,
+  "bin": {
+    "multi-wiki-server": "./bin/index.js",
+    "mws": "./bin/index.js"
+  },
+  "files": [
+    ".next",
+    "server.mjs",
+    "public",
+    "package.json",
+    "next.config.js"
+  ],
   "scripts": {
+    "prepare": "next build",
     "dev:local": "dotenv -e .env.development node server.mjs",
     "dev": "next dev --turbopack",
     "build": "next build",
