@@ -1,6 +1,6 @@
 # MWS (Multi Wiki Server)
 
-![mws](./public/screenshot.png)
+![mws](https://cdn.jsdelivr.net/gh/TecFancy/tw.tecfancy.com@main/public/screenshot.png)
 
 MWS is a simple package designed to efficiently manage and oversee multiple TiddlyWiki instances seamlessly.
 
