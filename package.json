@@ -1,6 +1,6 @@
 {
   "name": "@tecfancy/mws",
-  "version": "0.0.14",
+  "version": "0.0.16",
   "bin": {
     "multi-wiki-server": "bin/index.js",
     "mws": "bin/index.js"
@@ -19,9 +19,14 @@
     "server.mjs",
     "tailwind.config.ts"
   ],
+  "keywords": [
+    "TiddlyWiki",
+    "Multiple TiddlyWiki Server",
+    "multi-wiki-server",
+    "mws"
+  ],
   "scripts": {
     "prepare": "next build",
-    "pack": "node pack.js",
     "dev:local": "dotenv -e .env.development node server.mjs",
     "dev": "next dev --turbopack",
     "build": "next build",
