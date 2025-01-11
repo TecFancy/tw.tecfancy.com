@@ -6,6 +6,9 @@ const fs = require('fs');
 const os = require("node:os");
 
 const env = process.env;
+const protocol = env.PROTOCOL || 'http';
+const domain = env.DOMAIN || 'localhost';
+const port = env.PORT || 8080;
 
 // Get the project root directory path
 const projectRoot = path.resolve(__dirname, '..');
@@ -80,9 +83,10 @@ function startProcess() {
     // Let the child process run in the background
     child.unref();
 
-    console.log(`The 'start:local' command is Running in background, PID: ${child.pid}`);
-    console.log(`Log file: ${LOG_FILE}`);
+    console.log(`The server is Running in background, visit ${protocol}://${domain}:${port}`);
     console.log('Use `stop` command to stop the process');
+    console.log(`TiddlyWikis will be stored in ${os.homedir()}/.TiddlyWikis`);
+    console.log(`Log file: ${LOG_FILE}`);
 }
 
 // TODO remove this duplicated code (src/lib/index.ts)
