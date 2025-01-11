@@ -2,18 +2,23 @@ import fs, {existsSync, writeFileSync} from 'fs';
 import net from 'net';
 import express from 'express';
 import { spawn } from 'child_process';
-import { join } from "path";
+import { isAbsolute, join } from "path";
+import { homedir } from "node:os";
 import next from 'next';
-import dotenv from 'dotenv';
 
-const env = dotenv.config().parsed;
-const protocol = env.PROTOCOL || process.env.PROTOCOL || 'http';
-const domain = env.DOMAIN || process.env.DOMAIN || 'localhost';
-const port = env.PORT || process.env.PORT || 8080;
-const dev = (env.NODE_ENV || process.env.NODE_ENV) !== 'production';
+const env = process.env;
+const protocol = env.PROTOCOL || 'http';
+const domain = env.DOMAIN || 'localhost';
+const port = env.PORT || 8080;
+const instancesRoot = env.INSTANCES_ROOT || homedir();
+const dev = env.NODE_ENV !== 'production';
 const app = next({ dev, turbopack: dev });
 const handle = app.getRequestHandler();
-const BASE_DATA_DIR = join(process.cwd(), 'tiddlywiki-instances');
+
+const BASE_DATA_DIR = instancesRoot && isAbsolute(instancesRoot)
+    ? join(instancesRoot, '.TiddlyWikis')
+    : join(homedir(), '.TiddlyWikis');
+
 const INSTANCES_FILE = join(BASE_DATA_DIR, 'instances.json');
 
 // Helper function: check if a port is open
