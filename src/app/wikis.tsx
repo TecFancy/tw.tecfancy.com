@@ -1,10 +1,16 @@
 import Link from "next/link";
 
 import fs from "fs";
-import { join } from "path";
+import { isAbsolute, join } from "path";
+import os from "node:os";
+
+const env = process.env;
 
 const Wikis = () => {
-    const BASE_DATA_DIR = join(process.cwd(), 'tiddlywiki-instances');
+    const instancesRoot = env.INSTANCES_ROOT || os.homedir();
+    const BASE_DATA_DIR = instancesRoot && isAbsolute(instancesRoot)
+        ? join(instancesRoot, '.TiddlyWikis')
+        : join(os.homedir(), '.TiddlyWikis');
     if (!fs.existsSync(BASE_DATA_DIR)) return null;
 
     const INSTANCES_FILE = join(BASE_DATA_DIR, 'instances.json');

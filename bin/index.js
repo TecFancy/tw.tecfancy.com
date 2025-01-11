@@ -3,6 +3,9 @@
 const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
+const os = require("node:os");
+
+const env = process.env;
 
 // Get the project root directory path
 const projectRoot = path.resolve(__dirname, '..');
@@ -84,7 +87,11 @@ function startProcess() {
 
 // TODO remove this duplicated code (src/lib/index.ts)
 function getInstances() {
-    const BASE_DATA_DIR = path.join(process.cwd(), 'tiddlywiki-instances');
+    const instancesRoot = env.INSTANCES_ROOT || os.homedir();
+    const BASE_DATA_DIR = instancesRoot && path.isAbsolute(instancesRoot)
+        ? path.join(instancesRoot, '.TiddlyWikis')
+        : path.join(os.homedir(), '.TiddlyWikis');
+
     if (!fs.existsSync(BASE_DATA_DIR)) return [];
 
     const INSTANCES_FILE = path.join(BASE_DATA_DIR, 'instances.json');

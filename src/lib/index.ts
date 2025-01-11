@@ -1,13 +1,18 @@
-import { join } from "path";
+import { isAbsolute, join } from "path";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { spawn } from "child_process";
+import os from "node:os";
 
 import dayjs from "dayjs";
 import getPort from "get-port";
 import { v4 as uuidv4 } from "uuid";
 
+const env = process.env;
 const instances = new Map();
-const BASE_DATA_DIR = join(process.cwd(), 'tiddlywiki-instances');
+const instancesRoot = env.INSTANCES_ROOT || os.homedir();
+const BASE_DATA_DIR = instancesRoot && isAbsolute(instancesRoot)
+    ? join(instancesRoot, '.TiddlyWikis')
+    : join(os.homedir(), '.TiddlyWikis');
 const INSTANCES_FILE = join(BASE_DATA_DIR, 'instances.json');
 
 const getAvailablePort = async () => {
@@ -73,7 +78,6 @@ const saveInstances = () => {
 };
 
 export const getInstances = () => {
-    const BASE_DATA_DIR = join(process.cwd(), 'tiddlywiki-instances');
     if (!existsSync(BASE_DATA_DIR)) return [];
 
     const INSTANCES_FILE = join(BASE_DATA_DIR, 'instances.json');
