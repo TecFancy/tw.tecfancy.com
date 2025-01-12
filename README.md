@@ -2,7 +2,7 @@
 
 ![mws](https://cdn.jsdelivr.net/gh/TecFancy/tw.tecfancy.com@main/public/screenshot.png)
 
-MWS is a simple package designed to efficiently manage and oversee multiple TiddlyWiki instances seamlessly.
+MWS is a simple package designed to efficiently manage and oversee multiple **TiddlyWiki** instances seamlessly.
 
 ## Quick Start
 
@@ -18,7 +18,7 @@ Then, run the following command to start the server:
 mws start
 ```
 
-This will start the server on port 8080. You can access the server by visiting `http://localhost:8080` in your browser.
+This will start the server on port 4236. You can access the server by visiting `http://localhost:4236` in your browser.
 
 Use the following command to stop the server:
 
