@@ -1,23 +1,14 @@
 {
   "name": "@tecfancy/mws",
-  "version": "0.0.16",
+  "version": "0.0.28",
   "bin": {
     "multi-wiki-server": "bin/index.js",
     "mws": "bin/index.js"
   },
   "files": [
     ".next",
-    "public",
-    "src",
-    "types",
     ".env",
-    "eslint.config.mjs",
-    "next.config.js",
-    "next-env.d.ts",
-    "package.json",
-    "postcss.config.mjs",
-    "server.mjs",
-    "tailwind.config.ts"
+    "package.json"
   ],
   "keywords": [
     "TiddlyWiki",
@@ -27,16 +18,15 @@
   ],
   "scripts": {
     "prepare": "next build",
-    "dev:local": "dotenv -e .env.development node server.mjs",
-    "dev": "next dev --turbopack",
+    "dev": "concurrently -k -n TiddlyWiki,NextJS -c yellow,green \"node scripts/start-tiddlywiki-instances.mjs\" \"PORT=4236 next dev --turbopack\"",
     "build": "next build",
-    "start:local": "dotenv -e .env.production node server.mjs",
-    "start": "next start",
+    "start": "concurrently -k -n TiddlyWiki,NextJS -c yellow,green \"node scripts/start-tiddlywiki-instances.mjs\" \"PORT=4236 next start\"",
     "lint": "next lint"
   },
   "dependencies": {
     "antd": "^5.23.0",
     "classnames": "^2.5.1",
+    "concurrently": "^9.1.2",
     "dayjs": "^1.11.13",
     "dotenv-cli": "^8.0.0",
     "express": "^4.21.2",

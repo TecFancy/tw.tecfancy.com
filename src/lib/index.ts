@@ -1,7 +1,7 @@
 import { isAbsolute, join } from "path";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { spawn } from "child_process";
-import os from "node:os";
+import os from "os";
 
 import dayjs from "dayjs";
 import getPort from "get-port";

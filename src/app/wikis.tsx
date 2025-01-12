@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import fs from "fs";
 import { isAbsolute, join } from "path";
-import os from "node:os";
+import os from "os";
 
 const env = process.env;
 

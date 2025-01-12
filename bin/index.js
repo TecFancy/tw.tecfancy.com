@@ -3,7 +3,7 @@
 const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
-const os = require("node:os");
+const os = require("os");
 
 const env = process.env;
 const protocol = env.PROTOCOL || 'http';
@@ -65,7 +65,7 @@ function startProcess() {
 
     // Define the command and arguments to run
     const commandToRun = 'npm';
-    const argsToRun = ['run', 'start:local'];
+    const argsToRun = ['run', 'start'];
 
     // Create write streams for logging
     const out = fs.openSync(LOG_FILE, 'a');
