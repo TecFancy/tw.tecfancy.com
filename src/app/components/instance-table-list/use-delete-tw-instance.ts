@@ -1,18 +1,16 @@
 import { useState } from 'react';
-import { useEnv, useInstancesDispatch } from "@/app/hooks";
+import { useInstancesDispatch } from "@/app/hooks";
 
 const useDeleteTwInstance = () => {
-    const envContext = useEnv();
-    const { protocol, domain, port } = envContext;
     const dispatch = useInstancesDispatch();
     const [isLoading, setIsLoading] = useState(false);
 
     const deleteInstance = async ({ instanceId }: { instanceId: string }) => {
         try {
             setIsLoading(true);
-            const res = await fetch(`${protocol}://${domain}:${port}/api`, {
+            const res = await fetch(`http://localhost:4236/api`, {
                 method: 'DELETE',
-                body: JSON.stringify({ id: instanceId, envContext }),
+                body: JSON.stringify({ id: instanceId }),
             });
             if (res.ok) {
                 dispatch({ type: 'instances/delete', id: instanceId });

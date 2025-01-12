@@ -4,7 +4,7 @@ import React from 'react';
 import Card from "@/app/components/card";
 import CreateTwForm from "@/app/components/create-tw-form";
 import InstanceTableList from "@/app/components/instance-table-list";
-import {useInstances} from "@/app/hooks";
+import { useInstances } from "@/app/hooks";
 
 const Home = () => {
     const instances = useInstances();

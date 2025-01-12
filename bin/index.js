@@ -6,9 +6,8 @@ const fs = require('fs');
 const os = require("os");
 
 const env = process.env;
-const protocol = env.PROTOCOL || 'http';
-const domain = env.DOMAIN || 'localhost';
-const port = env.PORT || 8080;
+const protocol = env.NEXT_PUBLIC_PROTOCOL || 'http';
+const domain = env.NEXT_PUBLIC_DOMAIN || 'localhost';
 
 // Get the project root directory path
 const projectRoot = path.resolve(__dirname, '..');
@@ -83,7 +82,7 @@ function startProcess() {
     // Let the child process run in the background
     child.unref();
 
-    console.log(`The server is Running in background, visit ${protocol}://${domain}:${port}`);
+    console.log(`The server is Running in background, visit ${protocol}://${domain}:4236`);
     console.log('Use `stop` command to stop the process');
     console.log(`TiddlyWikis will be stored in ${os.homedir()}/.TiddlyWikis`);
     console.log(`Log file: ${LOG_FILE}`);

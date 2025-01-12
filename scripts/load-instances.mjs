@@ -6,8 +6,8 @@ import waitForPort from "./wait-for-port.mjs";
 
 
 const env = process.env;
-const domain = env.DOMAIN || 'localhost';
-const instancesRoot = env.INSTANCES_ROOT || homedir();
+const domain = env.NEXT_PUBLIC_DOMAIN || 'localhost';
+const instancesRoot = env.NEXT_PUBLIC_INSTANCES_ROOT || homedir();
 
 const BASE_DATA_DIR = instancesRoot && isAbsolute(instancesRoot)
     ? join(instancesRoot, '.TiddlyWikis')

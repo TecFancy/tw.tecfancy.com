@@ -4,9 +4,8 @@ import fs from "fs";
 import { isAbsolute, join } from "path";
 import os from "os";
 
-const env = process.env;
-
 const Wikis = () => {
+    const env = process.env;
     const instancesRoot = env.INSTANCES_ROOT || os.homedir();
     const BASE_DATA_DIR = instancesRoot && isAbsolute(instancesRoot)
         ? join(instancesRoot, '.TiddlyWikis')

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import classNames from "classnames";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -14,7 +14,7 @@ const LeftToolBarPage = () => {
     const dispatch = useInstancesDispatch();
     const [instances, setInstances] = useState<Instances>([]);
 
-    const bootstrap = async () => {
+    const bootstrap = useCallback(async () => {
         try {
             const result = await fetchInstances();
             setInstances(result);
@@ -23,11 +23,11 @@ const LeftToolBarPage = () => {
             console.error('getInitializedInstances error', error);
             setInstances([]);
         }
-    };
+    }, [dispatch]);
 
     useEffect(() => {
         bootstrap();
-    }, []);
+    }, [bootstrap]);
 
     useEffect(() => {
         setInstances(instancesStore);
