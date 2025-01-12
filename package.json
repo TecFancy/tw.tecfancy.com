@@ -19,6 +19,7 @@
   ],
   "scripts": {
     "prepare": "next build",
+    "test-pm2-start": "cross-env NODE_ENV=development node scripts/test-pm2-start.mjs",
     "dev": "concurrently -k -n TiddlyWiki,NextJS -c yellow,green \"node scripts/start-tiddlywiki-instances.mjs\" \"PORT=4236 next dev --turbopack\"",
     "build": "next build",
     "start": "concurrently -k -n TiddlyWiki,NextJS -c yellow,green \"node scripts/start-tiddlywiki-instances.mjs\" \"PORT=4236 next start\"",
@@ -28,6 +29,7 @@
     "antd": "^5.23.0",
     "classnames": "^2.5.1",
     "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
