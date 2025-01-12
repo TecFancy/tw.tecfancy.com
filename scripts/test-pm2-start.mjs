@@ -1,4 +1,4 @@
-import startApps from "./test-pm2-start-app.mjs";
+import startApps from "./test-pm2-start-apps.mjs";
 
 const NODE_ENV = process.env.NODE_ENV;
 const NAMESPACE = process.env.NAMESPACE;
@@ -18,11 +18,4 @@ startApps([
         },
         namespace: NAMESPACE,
     }
-]).then(() => {
-    console.log('Successfully started');
-}).catch((error) => {
-    console.error(`Error starting apps: ${error.message}`);
-    process.exit(1);
-}).finally(() => {
-    process.exit(0);
-});
+]);

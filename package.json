@@ -20,6 +20,7 @@
   "scripts": {
     "prepare": "next build",
     "test-pm2-start": "cross-env NODE_ENV=development NAMESPACE=mws node scripts/test-pm2-start.mjs",
+    "test-pm2-stop": "cross-env NAMESPACE=mws node scripts/test-pm2-stop.mjs",
     "dev": "concurrently -k -n TiddlyWiki,NextJS -c yellow,green \"node scripts/start-tiddlywiki-instances.mjs\" \"PORT=4236 next dev --turbopack\"",
     "build": "next build",
     "start": "concurrently -k -n TiddlyWiki,NextJS -c yellow,green \"node scripts/start-tiddlywiki-instances.mjs\" \"PORT=4236 next start\"",
