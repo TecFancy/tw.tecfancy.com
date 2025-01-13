@@ -47,7 +47,7 @@ const startApps = async (apps) => {
                     env,
                     namespace,
                 });
-                console.log(`Started ${appName} with PM2, visit http://localhost:${env.PORT}/`);
+                console.log(`Started ${appName} with PM2, visit http://localhost:${env.PORT}`);
             }
         }
     } catch (error) {

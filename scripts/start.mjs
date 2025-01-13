@@ -1,4 +1,4 @@
-import startApps from "./test-pm2-start-apps.mjs";
+import startApps from "./start-apps.mjs";
 
 const NODE_ENV = process.env.NODE_ENV;
 const PORT = process.env.PORT || 4236;
