@@ -44,7 +44,7 @@ const startApps = async (apps) => {
                     name: appName,
                     script,
                     args,
-                    env: { ...env, PORT: 4236 },
+                    env,
                     namespace,
                 });
                 console.log(`Started ${appName} with PM2, visit http://localhost:${env.PORT}/`);

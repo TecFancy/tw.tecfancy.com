@@ -1,6 +1,7 @@
 import startApps from "./test-pm2-start-apps.mjs";
 
 const NODE_ENV = process.env.NODE_ENV;
+const PORT = process.env.PORT || 4236;
 const NAMESPACE = process.env.NAMESPACE;
 
 const mwsAppArgsMap = {
@@ -14,6 +15,7 @@ startApps([
         script: 'next',
         args: [mwsAppArgsMap[NODE_ENV]],
         env: {
+            PORT,
             NODE_ENV,
         },
         namespace: NAMESPACE,
