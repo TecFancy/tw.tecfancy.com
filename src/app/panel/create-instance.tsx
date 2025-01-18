@@ -9,7 +9,7 @@ const CreateInstance = () => {
 
     return (
         <Form action={formAction}>
-            <input name="twName" />
+            <input name="title" />
             <button type="submit" disabled={isPending}>{isPending ? 'Creating...' : 'Create TiddlyWiki Instance'}</button>
         </Form>
     );
