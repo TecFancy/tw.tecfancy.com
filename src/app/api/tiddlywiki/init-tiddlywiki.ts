@@ -1,18 +1,10 @@
 import { isAbsolute, join } from "path";
 import { homedir } from "os";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { mkdirSync, writeFileSync } from "fs";
+import { spawn } from "child_process";
+import { v4 as uuidv4 } from "uuid";
 import getPort from "get-port";
-import {v4 as uuidv4} from "uuid";
-import {spawn} from "child_process";
-
-interface Instance {
-    id: string;
-    pid?: number;
-    port: number;
-    dataDir: string;
-    title: string;
-    cmd: string;
-}
+import getInstances, { Instance } from "./get-tiddlywiki-instances";
 
 const env = process.env;
 const instancesRoot = env.INSTANCES_ROOT || homedir();
@@ -20,14 +12,6 @@ const BASE_DATA_DIR = instancesRoot && isAbsolute(instancesRoot)
     ? join(instancesRoot, '.TiddlyWikis')
     : join(homedir(), '.TiddlyWikis');
 const INSTANCES_FILE = join(BASE_DATA_DIR, 'instances.json');
-
-const getInstances = () => {
-    if (!existsSync(BASE_DATA_DIR)) return [];
-
-    if (!existsSync(INSTANCES_FILE)) return [];
-
-    return JSON.parse(readFileSync(INSTANCES_FILE, 'utf-8') || '[]') as Instance[];
-};
 
 const getAvailablePort = async (instances: Instance[]) => {
     let port = await getPort();
@@ -50,7 +34,7 @@ const isProcessRunning = (pid: number) => {
     }
 };
 
-const createTiddlywiki = async (params: { title: string }) => {
+const initTiddlywiki = async (params: { title: string }) => {
     const { title } = params;
     const instances = getInstances();
 
@@ -77,17 +61,19 @@ const createTiddlywiki = async (params: { title: string }) => {
         });
     });
 
-    if (createdInst) {
-        instances.push({
-            id,
-            port,
-            dataDir,
-            title,
-            cmd: 'tiddlywiki',
-        });
-    }
+    const instance = {
+        id,
+        port,
+        dataDir,
+        title,
+        cmd: 'tiddlywiki',
+    };
+
+    if (createdInst) instances.push(instance);
 
     writeFileSync(INSTANCES_FILE, JSON.stringify(instances, null, 2), 'utf-8');
+
+    return instance;
 };
 
-export default createTiddlywiki;
+export default initTiddlywiki;
