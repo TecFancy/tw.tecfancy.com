@@ -19,9 +19,10 @@
   ],
   "scripts": {
     "prepare": "next build",
-    "dev": "cross-env NODE_ENV=development NAMESPACE=mws node scripts/start.mjs",
+    "dev": "cross-env NODE_ENV=development NAMESPACE=mws node scripts/start.mjs && npm run start:tw",
     "build": "next build",
-    "start": "cross-env NODE_ENV=production NAMESPACE=mws node scripts/start.mjs",
+    "start": "cross-env NODE_ENV=production NAMESPACE=mws node scripts/start.mjs && npm run start:tw",
+    "start:tw": "NAMESPACE=mws node scripts/start-tw.mjs",
     "stop": "cross-env NAMESPACE=mws node scripts/stop.mjs",
     "lint": "next lint"
   },

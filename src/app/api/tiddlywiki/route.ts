@@ -17,22 +17,11 @@ export async function POST(request: Request) {
 
     const bodyData = await request.json();
 
-    const instance = await startTiddlywiki(await initTiddlywiki(bodyData.title));
+    await initTiddlywiki({ title: bodyData.title });
+    await startTiddlywiki();
     const instances = getTiddlywikiInstances();
 
+    writeFileSync(INSTANCES_FILE, JSON.stringify((instances), null, 2), 'utf-8');
 
-    if (instance) {
-        const result = instances.map(inst => {
-            if (inst.id === instance.id) {
-                inst.pid = instance.pid
-            }
-            return inst;
-        });
-
-        writeFileSync(INSTANCES_FILE, JSON.stringify((result), null, 2), 'utf-8');
-
-        return Response.json({ data: result });
-    } else {
-        return Response.json({ data: [] });
-    }
+    return Response.json({ data: instances });
 }
