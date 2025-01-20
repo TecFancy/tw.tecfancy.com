@@ -17,11 +17,11 @@ export async function POST(request: Request) {
 
     const bodyData = await request.json();
 
-    await initTiddlywiki({ title: bodyData.title });
+    const instance = await initTiddlywiki({ title: bodyData.title });
     await startTiddlywiki();
     const instances = getTiddlywikiInstances();
 
     writeFileSync(INSTANCES_FILE, JSON.stringify((instances), null, 2), 'utf-8');
 
-    return Response.json({ data: instances });
+    return Response.json({ data: { instance, instances } });
 }
