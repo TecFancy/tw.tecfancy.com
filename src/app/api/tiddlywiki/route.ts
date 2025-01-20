@@ -17,7 +17,7 @@ export async function POST(request: Request) {
 
     const bodyData = await request.json();
 
-    await initTiddlywiki({ title: bodyData.title });
+    await initTiddlywiki({ title: bodyData.title, subtitle: bodyData?.subtitle });
     await startTiddlywiki();
     const instances = getTiddlywikiInstances();
 
