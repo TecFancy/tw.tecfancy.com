@@ -24,9 +24,9 @@ const CreateTwForm = () => {
     return (
         <Form action={formAction} className="create-tw-form">
             <div className="form-item">
-                <label htmlFor="twName" className="required">Title</label>
+                <label htmlFor="title" className="required">Title</label>
                 <input
-                    name="twName"
+                    name="title"
                     disabled={isPending}
                     onChange={handleTwNameChange}
                     autoComplete="false"
@@ -34,9 +34,9 @@ const CreateTwForm = () => {
                 />
             </div>
             <div className="form-item">
-                <label htmlFor="twSubtitle">Subtitle</label>
+                <label htmlFor="subtitle">Subtitle</label>
                 <input
-                    name="twSubtitle"
+                    name="subtitle"
                     disabled={isPending}
                     autoComplete="false"
                     placeholder="a non-linear personal web notebook"

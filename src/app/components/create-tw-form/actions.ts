@@ -1,12 +1,12 @@
 'use server';
 
 export const createInstance = async (_prevState: unknown, formData: FormData) => {
-    const res = await fetch(`http://localhost:4236/api`, {
+    const res = await fetch('http://localhost:4236/api/tiddlywiki', {
         method: 'POST',
-        body: JSON.stringify(Object.fromEntries(formData)),
         headers: {
             'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ title: formData.get('title') }),
     });
     if (res.ok) {
         return await res.json();

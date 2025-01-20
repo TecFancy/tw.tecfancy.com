@@ -5,6 +5,7 @@ import { spawn } from "child_process";
 import { v4 as uuidv4 } from "uuid";
 import getPort from "get-port";
 import getInstances, { Instance } from "./get-tiddlywiki-instances";
+import setTiddlywikiInstanceTitle from "@/app/api/tiddlywiki/set-tiddlywiki-instance-title";
 
 const env = process.env;
 const instancesRoot = env.INSTANCES_ROOT || homedir();
@@ -60,6 +61,9 @@ const initTiddlywiki = async (params: { title: string }) => {
             else reject(new Error(`TiddlyWiki initialization failed, code ${code}`));
         });
     });
+
+    // Set custom title of TiddlyWiki Instance
+    setTiddlywikiInstanceTitle({ dataDir, title });
 
     const instance = {
         id,
