@@ -14,7 +14,7 @@ const WikiIFramePage = () => {
     return (
         <iframe
             className="wiki-iframe"
-            title={currentInstance?.twName}
+            title={currentInstance?.title}
             src={`http://localhost:${currentInstance?.port}`}
         />
     );

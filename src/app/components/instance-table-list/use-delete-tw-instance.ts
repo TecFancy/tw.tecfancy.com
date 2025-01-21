@@ -8,12 +8,13 @@ const useDeleteTwInstance = () => {
     const deleteInstance = async ({ instanceId }: { instanceId: string }) => {
         try {
             setIsLoading(true);
-            const res = await fetch(`http://localhost:4236/api`, {
+            const res = await fetch(`http://localhost:4236/api/tiddlywiki`, {
                 method: 'DELETE',
                 body: JSON.stringify({ id: instanceId }),
             });
             if (res.ok) {
-                dispatch({ type: 'instances/delete', id: instanceId });
+                const resData = await res.json();
+                dispatch({ type: 'instances/delete', instances: resData?.data?.instances || [] });
             } else {
                 console.error('deleteInstance error', res.statusText);
             }

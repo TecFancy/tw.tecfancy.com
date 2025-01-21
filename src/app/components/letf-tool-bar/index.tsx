@@ -14,6 +14,16 @@ const LeftToolBarPage = () => {
     const dispatch = useInstancesDispatch();
     const [instances, setInstances] = useState<Instances>([]);
 
+    const getTiddlywikiTitle = (instance: Instance) => {
+        const title = instance.title;
+        const arr = title.split(' ');
+        if (arr.length >= 2) {
+            return `${arr[0][0]}${arr[1][0]}`;
+        } else {
+            return arr[0][0];
+        }
+    };
+
     const bootstrap = useCallback(async () => {
         try {
             const result = await fetchInstances();
@@ -39,14 +49,14 @@ const LeftToolBarPage = () => {
                 <i className="iconfont">&#xe61d;</i>
             </Link>
             <section className="section">
-                {instances?.length > 0 && instances.map((instance) => (
+                {instances?.length > 0 && instances.filter((inst) => !inst.deleted).map((instance) => (
                     <Link
                         key={instance.id}
                         href={`/wiki/${instance.id}`}
-                        title={instance.twName}
+                        title={instance.title}
                         className={classNames("instance", { active: params?.id === instance.id })}
                     >
-                        {instance.twName?.[0]}
+                        {getTiddlywikiTitle(instance)}
                     </Link>
                 ))}
             </section>

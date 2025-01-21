@@ -40,14 +40,14 @@ const generateTiddlyWikiTimestamp = () => {
     return dayjs().format('YYYYMMDDHHmmssSSS');
 };
 
-const updateInstanceTitle = (params: { dataDir: string; twName: string; }) => {
+const updateInstanceTitle = (params: { dataDir: string; title: string; }) => {
     const siteTitleTid = [
         `created: ${generateTiddlyWikiTimestamp()}`,
         `modified: ${generateTiddlyWikiTimestamp()}`,
         'title: $:/SiteTitle',
         'type: text/vnd.tiddlywiki',
         '',
-        params.twName,
+        params.title,
     ].join('\n');
     const filePath = join(params.dataDir, 'tiddlers', '$__SiteTitle.tid');
     writeFileSync(filePath, siteTitleTid, 'utf-8');
@@ -67,12 +67,12 @@ const updateInstanceSubTitle = (params: { dataDir: string; twSubtitle: string; }
 };
 
 const saveInstances = () => {
-    const data = Array.from(instances.values()).map(({ id, pid, port, dataDir, twName }) => ({
+    const data = Array.from(instances.values()).map(({ id, pid, port, dataDir, title }) => ({
         id,
         pid,
         port,
         dataDir,
-        twName,
+        title,
     }));
     writeFileSync(INSTANCES_FILE, JSON.stringify(data, null, 2), 'utf-8');
 };
@@ -86,7 +86,7 @@ export const getInstances = () => {
     return JSON.parse(readFileSync(INSTANCES_FILE, 'utf-8') || '[]') as Instances;
 };
 
-export const createInstance = async (params: { twName: string, twSubtitle: string }) => {
+export const createInstance = async (params: { title: string, twSubtitle: string }) => {
     const id = uuidv4();
     const port = await getAvailablePort();
     const dataDir = join(BASE_DATA_DIR, id);
@@ -126,20 +126,20 @@ export const createInstance = async (params: { twName: string, twSubtitle: strin
         pid,
         port,
         dataDir,
-        twName: params.twName,
+        title: params.title,
         process: server,
         url: `http://localhost:${port}`,
     };
 
     // Update the instance title and subtitle
-    updateInstanceTitle({ dataDir, twName: params.twName });
+    updateInstanceTitle({ dataDir, title: params.title });
     updateInstanceSubTitle({ dataDir, twSubtitle: params.twSubtitle });
 
     // If there are no instances in memory, load them from disk
     const instancesData = getInstances();
     if (instances.size === 0 && instancesData.length > 0) {
-        instancesData.forEach(({ id, pid, port, dataDir, twName }) => {
-            instances.set(id, { id, pid, port, dataDir, twName });
+        instancesData.forEach(({ id, pid, port, dataDir, title }) => {
+            instances.set(id, { id, pid, port, dataDir, title });
         });
     }
 
@@ -177,7 +177,7 @@ export const deleteInstance = async (params: { instanceId: string }) => {
 
 (async () => {
     const instancesData = getInstances();
-    instancesData.forEach(({ id, pid, port, dataDir, twName }) => {
-        instances.set(id, { id, pid, port, dataDir, twName });
+    instancesData.forEach(({ id, pid, port, dataDir, title }) => {
+        instances.set(id, { id, pid, port, dataDir, title });
     });
 })();

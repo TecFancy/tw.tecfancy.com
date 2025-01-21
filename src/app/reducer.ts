@@ -1,7 +1,7 @@
 export type InstancesActionType =
     | { type: 'instances/initial'; instances: Instances }
     | { type: 'instances/add'; instance: Instance }
-    | { type: 'instances/delete'; id: string }
+    | { type: 'instances/delete'; instances: Instances }
 
 export const initialInstances: Instances = [];
 export function instancesReducer(instances: Instances, action: InstancesActionType) {
@@ -13,7 +13,7 @@ export function instancesReducer(instances: Instances, action: InstancesActionTy
             return [...instances, action.instance];
         }
         case "instances/delete": {
-            return instances.filter((instance: Instance) => instance.id !== action.id);
+            return action.instances;
         }
         default: {
             throw new Error(`Unknown action: ${action}`);

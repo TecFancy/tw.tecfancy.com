@@ -26,4 +26,10 @@ Use the following command to stop the server:
 mws stop
 ```
 
-_More features are coming soon, stay tuned ;-)_
+## Features
+
+* Use `PM2` to manage server and TiddlyWiki instances
+* Support add and delete TiddlyWiki instance
+* Customize TiddlyWiki instance title
+* Customize TiddlyWiki instance subtitle
+* _More features are coming soon, stay tuned ;-)_

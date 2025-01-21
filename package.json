@@ -1,6 +1,6 @@
 {
   "name": "@tecfancy/mws",
-  "version": "0.0.33",
+  "version": "0.1.0",
   "bin": {
     "multi-wiki-server": "bin/index.js",
     "mws": "bin/index.js"
@@ -19,23 +19,27 @@
   ],
   "scripts": {
     "prepare": "next build",
-    "dev": "concurrently -k -n TiddlyWiki,NextJS -c yellow,green \"node scripts/start-tiddlywiki-instances.mjs\" \"PORT=4236 next dev --turbopack\"",
+    "dev": "cross-env NODE_ENV=development NAMESPACE=mws node scripts/start.mjs && npm run start:tw",
     "build": "next build",
-    "start": "concurrently -k -n TiddlyWiki,NextJS -c yellow,green \"node scripts/start-tiddlywiki-instances.mjs\" \"PORT=4236 next start\"",
+    "start": "cross-env NODE_ENV=production NAMESPACE=mws node scripts/start.mjs && npm run start:tw",
+    "start:tw": "NAMESPACE=mws node scripts/start-tw.mjs",
+    "stop": "cross-env NAMESPACE=mws node scripts/stop.mjs",
     "lint": "next lint"
   },
   "dependencies": {
     "antd": "^5.23.0",
     "classnames": "^2.5.1",
-    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "get-port": "^7.1.0",
     "http-proxy-middleware": "^3.0.3",
     "next": "15.1.3",
+    "pm2": "^5.4.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "tiddlywiki": "^5.3.6",
     "uuid": "^11.0.3"
   },
   "devDependencies": {

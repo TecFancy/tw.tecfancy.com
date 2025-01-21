@@ -10,7 +10,7 @@ const Home = () => {
     const instances = useInstances();
 
     const renderInstanceTableList = () => {
-        if (instances.length <= 0) return;
+        if (instances?.filter((inst) => !inst?.deleted).length <= 0) return;
         return (
             <Card>
                 <InstanceTableList />

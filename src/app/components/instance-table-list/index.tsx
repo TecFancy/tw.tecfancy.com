@@ -11,18 +11,13 @@ const Index = () => {
     const columns = [
         {
             title: 'Instance',
-            dataIndex: 'twName',
-            key: 'twName',
+            dataIndex: 'title',
+            key: 'title',
         },
         {
             title: 'Instance ID',
             dataIndex: 'id',
             key: 'id',
-        },
-        {
-            title: 'Instance PID',
-            dataIndex: 'pid',
-            key: 'pid',
         },
         {
             title: 'Instance Port',
@@ -42,7 +37,7 @@ const Index = () => {
     return (
         <Table<Instance>
             columns={columns}
-            dataSource={instances.map(instance => ({
+            dataSource={instances.filter((inst) => !inst?.deleted).map(instance => ({
                 ...instance,
                 key: instance.id,
             }))}
