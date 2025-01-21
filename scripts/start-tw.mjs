@@ -22,7 +22,7 @@ const getInstances = () => {
 };
 
 const instances = getInstances();
-const twAppsConfig = instances.map(({ title, dataDir, port }) => ({
+const twAppsConfig = instances.filter((inst) => !inst?.deleted).map(({ title, dataDir, port }) => ({
     appName: `TW: ${title}`,
     script: 'npx',
     args: ['tiddlywiki', dataDir, '--listen', `port=${port}`],

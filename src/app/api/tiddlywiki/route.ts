@@ -12,7 +12,6 @@ const BASE_DATA_DIR = instancesRoot && isAbsolute(instancesRoot)
     ? join(instancesRoot, '.TiddlyWikis')
     : join(homedir(), '.TiddlyWikis');
 const INSTANCES_FILE = join(BASE_DATA_DIR, 'instances.json');
-const DELETED_INSTANCES_FILE = join(BASE_DATA_DIR, 'deleted-instances.json');
 
 export const dynamic = 'force-static';
 
@@ -32,8 +31,20 @@ export async function POST(request: Request) {
 export async function DELETE(request: Request) {
     const { id } = await request.json();
     const instances = getTiddlywikiInstances();
-    const deletedInstance = instances.find((instance) => instance.id === id);
-    writeFileSync(DELETED_INSTANCES_FILE, JSON.stringify(deletedInstance, null, 2), 'utf-8');
-    await stopTiddlywiki();
-    return Response.json({ data: {  } });
+
+    let deletedInstanceTitle = '';
+    const updatedInstances = instances.map((inst) => {
+        if (inst.id === id) {
+            inst.deleted = true;
+            deletedInstanceTitle = `TW: ${inst.title}`;
+        }
+        return inst;
+    });
+    writeFileSync(INSTANCES_FILE, JSON.stringify(updatedInstances, null, 2), 'utf-8');
+
+    console.log('deleted', deletedInstanceTitle)
+
+    await stopTiddlywiki({ title: deletedInstanceTitle });
+
+    return Response.json({ data: { instances: updatedInstances } });
 }

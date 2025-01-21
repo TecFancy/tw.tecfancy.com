@@ -37,7 +37,7 @@ const Index = () => {
     return (
         <Table<Instance>
             columns={columns}
-            dataSource={instances.map(instance => ({
+            dataSource={instances.filter((inst) => !inst?.deleted).map(instance => ({
                 ...instance,
                 key: instance.id,
             }))}

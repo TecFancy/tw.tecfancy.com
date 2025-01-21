@@ -9,6 +9,7 @@ export interface Instance {
     dataDir: string;
     title: string;
     cmd: string;
+    deleted?: boolean;
 }
 
 const env = process.env;

@@ -23,7 +23,7 @@
     "build": "next build",
     "start": "cross-env NODE_ENV=production NAMESPACE=mws node scripts/start.mjs && npm run start:tw",
     "start:tw": "NAMESPACE=mws node scripts/start-tw.mjs",
-    "stop:tw": "cross-env NAMESPACE=mws node scripts/stop.mjs",
+    "stop": "cross-env NAMESPACE=mws node scripts/stop.mjs",
     "lint": "next lint"
   },
   "dependencies": {

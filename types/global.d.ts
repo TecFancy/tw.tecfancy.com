@@ -4,6 +4,7 @@ type Instance = {
     port: number;
     dataDir: string;
     title: string;
+    deleted?: boolean;
 };
 
 type Instances = Instance[];

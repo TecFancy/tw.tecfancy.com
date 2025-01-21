@@ -49,7 +49,7 @@ const LeftToolBarPage = () => {
                 <i className="iconfont">&#xe61d;</i>
             </Link>
             <section className="section">
-                {instances?.length > 0 && instances.map((instance) => (
+                {instances?.length > 0 && instances.filter((inst) => !inst.deleted).map((instance) => (
                     <Link
                         key={instance.id}
                         href={`/wiki/${instance.id}`}

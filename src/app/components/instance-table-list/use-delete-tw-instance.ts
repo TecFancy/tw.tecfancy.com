@@ -13,8 +13,8 @@ const useDeleteTwInstance = () => {
                 body: JSON.stringify({ id: instanceId }),
             });
             if (res.ok) {
-                console.log(await res.json());
-                // dispatch({ type: 'instances/delete', id: instanceId });
+                const resData = await res.json();
+                dispatch({ type: 'instances/delete', instances: resData?.data?.instances || [] });
             } else {
                 console.error('deleteInstance error', res.statusText);
             }

@@ -1,10 +1,14 @@
 import { spawn } from "child_process";
 
-const stopTiddlywiki = async (): Promise<void> => {
-    spawn('npm', ['run', 'stop:tw'], {
+interface ParamsType {
+    title?: string;
+}
+
+const stopTiddlywiki = async (params: ParamsType): Promise<void> => {
+    spawn('npm', ['run', 'stop'], {
         shell: true,
         stdio: 'inherit',
-        env: { ...process.env, TARGET: 'tiddlywiki' },
+        env: { ...process.env, DELETED_TIDDLYWIKI_TITLE: params.title },
     });
 };
 
