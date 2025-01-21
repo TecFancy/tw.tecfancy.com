@@ -11,18 +11,13 @@ const Index = () => {
     const columns = [
         {
             title: 'Instance',
-            dataIndex: 'twName',
-            key: 'twName',
+            dataIndex: 'title',
+            key: 'title',
         },
         {
             title: 'Instance ID',
             dataIndex: 'id',
             key: 'id',
-        },
-        {
-            title: 'Instance PID',
-            dataIndex: 'pid',
-            key: 'pid',
         },
         {
             title: 'Instance Port',
